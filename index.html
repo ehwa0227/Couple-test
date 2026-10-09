@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>💕 Relationship Recap Quiz 💕</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:'Segoe UI',sans-serif;
+    background:linear-gradient(135deg,#ffe4ec,#fff5f8);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.container{
+    width:100%;
+    max-width:700px;
+    background:white;
+    border-radius:30px;
+    padding:35px;
+    box-shadow:0 20px 40px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+    color:#ff4d88;
+    margin-top:0;
+}
+
+.subtitle{
+    text-align:center;
+    color:#666;
+    margin-bottom:25px;
+}
+
+.progress-bar{
+    width:100%;
+    height:16px;
+    background:#f1f1f1;
+    border-radius:20px;
+    overflow:hidden;
+    margin-bottom:20px;
+}
+
+.progress-fill{
+    height:100%;
+    width:0%;
+    background:#ff4d88;
+    transition:0.4s;
+}
+
+.question-number{
+    font-weight:bold;
+    color:#ff4d88;
+    margin-bottom:10px;
+}
+
+.question{
+    font-size:1.15rem;
+    line-height:1.6;
+    margin-bottom:20px;
+}
+
+input{
+    width:100%;
+    padding:14px;
+    font-size:1rem;
+    border:2px solid #ffd2df;
+    border-radius:12px;
+}
+
+button{
+    width:100%;
+    margin-top:15px;
+    border:none;
+    background:#ff4d88;
+    color:white;
+    padding:14px;
+    border-radius:12px;
+    font-size:1rem;
+    cursor:pointer;
+}
+
+button:hover{
+    opacity:0.9;
+}
+
+.feedback{
+    min-height:40px;
+    margin-top:15px;
+    text-align:center;
+    font-weight:bold;
+}
+
+.score{
+    text-align:center;
+    margin-top:10px;
+    color:#777;
+}
+
+.result{
+    text-align:center;
+}
+
+.answer-list{
+    text-align:left;
+    max-height:500px;
+    overflow:auto;
+    margin-top:20px;
+}
+
+.answer-item{
+    padding:8px 0;
+    border-bottom:1px solid #eee;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div id="app">
+
+<h1>💕 Relationship Recap Quiz 💕</h1>
+
+<div class="subtitle">
+Think you know me?<br>
+Let's see how much you remember about me and our journey together.
+</div>
+
+<div class="progress-bar">
+<div class="progress-fill" id="progressFill"></div>
+</div>
+
+<div class="question-number" id="questionNumber"></div>
+
+<div class="question" id="question"></div>
+
+<input type="text" id="answer" placeholder="정답을 입력하세요">
+
+<button onclick="submitAnswer()">정답 제출</button>
+
+<div class="feedback" id="feedback"></div>
+
+<div class="score" id="score"></div>
+
+</div>
+
+</div>
+
+<script>
+
+const quiz = [
+
+["마사지 잘하고 깨끗하게 씻겨주고 따뜻하게 재워주는 이화가 사는 마을 이름은?","백송마을"],
+["단풍 들면 다시 가기로 했던 출렁다리가 있던 데이트 장소는?","마장호수"],
+["더티섹시라는 말을 사람으로 바꾸면 누구일까?","신동호"],
+["월, 수, 금 6시에 이화가 가는 곳은?","수영장"],
+["처음 동호는 이렇게 예쁜 애가 왜 날 만나지 라고 생각하며 이화를 무엇으로 의심했을까?","장기털이범"],
+["동호가 어렸을 때 좋아했던 외국 배우는?","기네스펠트로"],
+["동호가 기억하는 가장 특별한 로맨틱 데이트 아이디어는?","수중데이트"],
+["이화의 MBTI는?","ENFJ"],
+["이화의 인생 첫 번째 외국계 회사는?","홍콩상하이은행"],
+["신동호가 가장 사랑하는 사람은?","홍이화"],
+["우리가 가장 좋아하는 주종은?","화이트와인"],
+["아이스크림, 핫도그, 환타파인애플로 입이 터진 곳은?","이케아"],
+["이화가 목욕탕 갈 때 꼭 사 가는 것은?","아이스아메리카노"],
+["우리 둘 다 사용하는 핸드폰은?","아이폰"],
+["이화의 30대를 함께한 사랑하는 강아지 이름은?","으리"],
+["건강검진 기준 이화의 몸무게는?","오십구"],
+["우리의 1일 날짜는?","구월십팔일"],
+["건강검진 기준 이화의 키는?","백칠십삼"],
+["우리 둘의 나이 차이는?","일곱살"],
+["임채무 아저씨가 운영하는 대형 키즈카페는?","두리랜드"],
+["내가 생각하는 오빠의 가장 매력적인 포인트는?","도토리"],
+["일산호수공원에서 함께 봤던 쇼는?","불꽃드론쇼"],
+["고기러버인 우리가 처음 만났던 장소는?","을지로삼가산청"],
+["이화네 엄마가 추석에 메인으로 하신 음식은?","돼지갈비찜"],
+["우리가 함께 본 첫 영화의 영화관은?","메가박스"],
+["추석 때 신동호가 가족과 함께 한 전통 카드게임은?","고스톱"],
+["이화는 꽃, 강아지, 과일 그리고 무엇을 좋아할까?","고기"],
+["우리가 처음 함께 가게 될 여행지는?","부산"]
+
+];
+
+let current = 0;
+let score = 0;
+
+function renderQuestion(){
+
+const percent = (current/quiz.length)*100;
+
+document.getElementById('progressFill').style.width = percent + '%';
+
+document.getElementById('questionNumber').innerHTML =
+`문제 ${current+1} / ${quiz.length}`;
+
+document.getElementById('question').innerHTML =
+quiz[current][0];
+
+document.getElementById('score').innerHTML =
+`현재 점수 : ${score}`;
+
+document.getElementById('answer').value='';
+
+document.getElementById('answer').focus();
+
+}
+
+function submitAnswer(){
+
+const user =
+document.getElementById('answer')
+.value
+.trim()
+.replace(/\s/g,'')
+.toLowerCase();
+
+const correct =
+quiz[current][1]
+.trim()
+.replace(/\s/g,'')
+.toLowerCase();
+
+let isCorrect = false;
+
+if(user === correct){
+    isCorrect = true;
+}
+
+if(
+ quiz[current][1] === "ENFJ" &&
+ (user==="enfj" || user==="이엔에프제이")
+){
+    isCorrect = true;
+}
+
+if(isCorrect){
+
+score++;
+
+document.getElementById('feedback').innerHTML =
+"❤️ 정답!";
+
+document.getElementById('feedback').style.color='green';
+
+}else{
+
+document.getElementById('feedback').innerHTML =
+"❌ 정답 : " + quiz[current][1];
+
+document.getElementById('feedback').style.color='red';
+
+}
+
+current++;
+
+setTimeout(()=>{
+
+document.getElementById('feedback').innerHTML='';
+
+if(current < quiz.length){
+
+renderQuestion();
+
+}else{
+
+showResult();
+
+}
+
+},1200);
+
+}
+
+function showResult(){
+
+let msg='';
+
+if(score===28){
+
+msg='💍 Soulmate Level';
+
+}else if(score>=25){
+
+msg='💕 Future Husband Level';
+
+}else if(score>=20){
+
+msg='💖 Pretty Good';
+
+}else if(score>=15){
+
+msg='😏 More Dates Required';
+
+}else{
+
+msg='🤣 Study Again';
+
+}
+
+document.getElementById('app').innerHTML =
+
+`
+<div class="result">
+
+<h1>💕 Quiz Complete 💕</h1>
+
+<h2>${score} / ${quiz.length}</h2>
+
+<h3>${msg}</h3>
+
+<button onclick="showAnswers()">
+정답 보기
+</button>
+
+</div>
+`;
+
+}
+
+function showAnswers(){
+
+let html = `
+<h1>💕 Answer Sheet 💕</h1>
+<div class="answer-list">
+`;
+
+quiz.forEach((item,index)=>{
+
+html += `
+<div class="answer-item">
+<b>${index+1}.</b>
+${item[1]}
+</div>
+`;
+
+});
+
+html += `
+</div>
+
+<button onclick="location.reload()">
+다시 하기
+</button>
+`;
+
+document.getElementById('app').innerHTML = html;
+
+}
+
+document.addEventListener('keydown',function(e){
+
+if(e.key==='Enter' && current < quiz.length){
+
+submitAnswer();
+
+}
+
+});
+
+renderQuestion();
+
+</script>
+
+</body>
+</html>
