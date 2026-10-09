@@ -254,14 +254,14 @@ if(isCorrect){
 score++;
 
 document.getElementById('feedback').innerHTML =
-"❤️ 정답!";
+"❤️ 정답! 쫌 하네?";
 
 document.getElementById('feedback').style.color='green';
 
 }else{
 
 document.getElementById('feedback').innerHTML =
-"❌ 정답 : " + quiz[current][1];
+"❌ 나 완전 실망이야!! 다음 문제로!";
 
 document.getElementById('feedback').style.color='red';
 
@@ -313,7 +313,7 @@ msg='😏 복습 후 재시험 권장';
 
 }else{
 
-msg='🤣 다시 만나서 이야기 좀 하자';
+msg='🤣 우리 얘기 좀 할까???';
 }
 
 document.getElementById('app').innerHTML =
@@ -328,7 +328,7 @@ document.getElementById('app').innerHTML =
 <h3>${msg}</h3>
 
 <button onclick="showAnswers()">
-정답 보기
+정답 보고 쉽게 쉽게 갈거야?
 </button>
 
 </div>
