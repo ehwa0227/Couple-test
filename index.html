@@ -291,26 +291,29 @@ function showResult(){
 
 let msg='';
 
-if(score===28){
+if(score===30){
 
-msg='💍 Soulmate Level';
+msg='💍 혼인신고 대기중';
 
-}else if(score>=25){
+}else if(score>=27){
 
-msg='💕 Future Husband Level';
+msg='💕 거의 남편 수준';
 
-}else if(score>=20){
+}else if(score>=23){
 
-msg='💖 Pretty Good';
+msg='💖 예비 신랑 후보';
 
-}else if(score>=15){
+}else if(score>=18){
 
-msg='😏 More Dates Required';
+msg='🥰 애정도 합격';
+
+}else if(score>=12){
+
+msg='😏 복습 후 재시험 권장';
 
 }else{
 
-msg='🤣 Study Again';
-
+msg='🤣 다시 만나서 이야기 좀 하자';
 }
 
 document.getElementById('app').innerHTML =
